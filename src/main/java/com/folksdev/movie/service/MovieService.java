@@ -1,14 +1,11 @@
 package com.folksdev.movie.service;
 
 import com.folksdev.movie.dto.CreateMovieRequest;
-import com.folksdev.movie.model.Actor;
-import com.folksdev.movie.model.Director;
-import com.folksdev.movie.model.Movie;
-import com.folksdev.movie.model.Publisher;
-import com.folksdev.movie.repository.DirectorRepository;
+import com.folksdev.movie.model.*;
 import com.folksdev.movie.repository.MovieRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -20,10 +17,11 @@ public class MovieService {
     private final PublisherService publisherService;
     private final DirectorService directorService;
 
-
     // constructor based => BEST PRACTICE
     public MovieService(MovieRepository movieRepository,
-                        DirectorRepository directorRepository, ActorService actorService, PublisherService publisherService, DirectorService directorService) { //Memory address
+                        ActorService actorService,
+                        PublisherService publisherService,
+                        DirectorService directorService) { //Memory address
         this.movieRepository = movieRepository;
         this.actorService = actorService;
         this.publisherService = publisherService;
@@ -32,10 +30,14 @@ public class MovieService {
 
 
     public Movie createMovie(CreateMovieRequest movieRequest) {
+
         Publisher publisher = publisherService.getPublisherById(movieRequest.getPublisherId());
-        Director director = directorService.findDirectorById(movieRequest.getDirectorId());
-        List<Actor> actorList = actorService.getActorList(List.copyOf(movieRequest.getActors()));
-        Movie movie = new Movie(null,
+        Director director = directorService.getDirectorById(movieRequest.getDirectorId());
+        List<Actor> actorList = actorService.getActorList(movieRequest.getActors());
+        if(actorList.isEmpty()) {
+            actorList.add(new Actor("taner", LocalDate.of(1997, 04,23), Gender.MALE));
+        }
+        Movie movie = new Movie(
                 movieRequest.getTitle(),
                 movieRequest.getDescription(),
                 movieRequest.getImdbUrl(),
@@ -56,4 +58,5 @@ public class MovieService {
         return movieRepository.selectImdbUrlByMovieId(id)
                 .orElseThrow(() -> new RuntimeException("FUCK!"));
     }
+
 }

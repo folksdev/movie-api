@@ -23,9 +23,7 @@ data class Actor @JvmOverloads constructor(
     )
     val movies: Set<Movie>? = HashSet()
 
-) {
-
-}
+)
 
 enum class Gender {
     MALE, FEMALE, UNKNOWN

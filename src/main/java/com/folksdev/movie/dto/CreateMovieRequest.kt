@@ -9,7 +9,7 @@ data class CreateMovieRequest(
     val duration: Int?,
     val featuredYear: Int?,
     val genresType: List<GenresType>?,
-    val actors: Set<String>?,
+    val actors: List<String>?,
     val publisherId: String?,
     val directorId: String?
 )

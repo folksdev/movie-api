@@ -13,7 +13,8 @@ public class DirectorService {
         this.directorRepository = directorRepository;
     }
 
-    protected Director findDirectorById(String id){
-        return directorRepository.findById(id).orElseThrow(() -> new RuntimeException("asd"));
+    protected Director getDirectorById(String id){
+        return directorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("asd"));
     }
 }

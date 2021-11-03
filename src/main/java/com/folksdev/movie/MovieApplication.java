@@ -22,7 +22,6 @@ public class MovieApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
     }
 
 

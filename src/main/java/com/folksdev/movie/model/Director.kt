@@ -15,9 +15,7 @@ data class Director @JvmOverloads constructor(
 
     @OneToMany(mappedBy = "director", fetch = FetchType.LAZY)
     val movies: Set<Movie>
-){
-
-    constructor(name: String, lastName: String): this("", name, lastName, HashSet())
+) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
