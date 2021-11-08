@@ -7,6 +7,8 @@ import com.folksdev.movie.repository.MovieRepository;
 import com.folksdev.movie.repository.PublisherRepository;
 import com.folksdev.movie.service.MovieService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -27,6 +29,7 @@ import static com.folksdev.movie.model.Gender.*;
  * comment out this `run` method or remove the whole class.
  */
 @Component
+@ConditionalOnProperty(name = "command.line.runner.enable", havingValue = "true")
 public class DataLoader implements CommandLineRunner {
 
     private final PublisherRepository publisherRepository;
@@ -42,6 +45,7 @@ public class DataLoader implements CommandLineRunner {
         this.directorRepository = directorRepository;
         this.movieService = movieService;
     }
+
 
     @Override
     public void run(String... args) throws Exception {

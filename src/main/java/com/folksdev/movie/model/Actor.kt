@@ -15,15 +15,34 @@ data class Actor @JvmOverloads constructor(
     val dateOfBirth: LocalDate,
     val gender: Gender,
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "actor_movies",
-        joinColumns = [JoinColumn(name = "actor_id", referencedColumnName = "actor_id")],
-        inverseJoinColumns = [JoinColumn(name = "movie_id", referencedColumnName = "movie_id")]
-    )
+    @ManyToMany(mappedBy = "actors", fetch = FetchType.LAZY)
     val movies: Set<Movie>? = HashSet()
 
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Actor
+
+        if (id != other.id) return false
+        if (name != other.name) return false
+        if (dateOfBirth != other.dateOfBirth) return false
+        if (gender != other.gender) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id?.hashCode() ?: 0
+        result = 31 * result + name.hashCode()
+        result = 31 * result + dateOfBirth.hashCode()
+        result = 31 * result + gender.hashCode()
+        return result
+    }
+}
+
+
 
 enum class Gender {
     MALE, FEMALE, UNKNOWN

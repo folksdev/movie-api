@@ -1,17 +1,19 @@
 package com.folksdev.movie.service;
 
 import com.folksdev.movie.TestSupport;
+import com.folksdev.movie.dto.ActorDto;
 import com.folksdev.movie.dto.CreateMovieRequest;
+import com.folksdev.movie.dto.DirectorDto;
+import com.folksdev.movie.dto.MovieDto;
+import com.folksdev.movie.dto.converter.MovieDtoConverter;
 import com.folksdev.movie.model.*;
 import com.folksdev.movie.repository.MovieRepository;
-import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +25,7 @@ class MovieServiceTest extends TestSupport {
     private ActorService actorService;
     private PublisherService publisherService;
     private DirectorService directorService;
-
+    private MovieDtoConverter movieDtoConverter;
     private MovieService movieService;
 
     @BeforeEach
@@ -32,8 +34,9 @@ class MovieServiceTest extends TestSupport {
         actorService = Mockito.mock(ActorService.class);
         publisherService = Mockito.mock(PublisherService.class);
         directorService = Mockito.mock(DirectorService.class);
+        movieDtoConverter = Mockito.mock(MovieDtoConverter.class);
 
-        movieService = new MovieService(movieRepository, actorService, publisherService, directorService);
+        movieService = new MovieService(movieRepository, actorService, publisherService, directorService, movieDtoConverter);
     }
 
     @Test
@@ -79,24 +82,38 @@ class MovieServiceTest extends TestSupport {
                 movieRequest,
                 Set.of(new Actor("taner", LocalDate.of(1997, 04,23), Gender.MALE)));
 
+        MovieDto expectedMovieDto = new MovieDto("id",
+                "title",
+                "description",
+                "imdbUrl",
+                "1h40",
+                100,
+                List.of(GenresType.ACTION, GenresType.COMEDY),
+                List.of(new ActorDto("id", "taner", LocalDate.of(1997, 04,23), Gender.MALE)),
+                new DirectorDto("directorId","directorName", "directorLastName"),
+                "publisherName"
+                );
+
         /* 2. Adim: Davranis belirleme (Mock siniflar icin) */
         Mockito.when(publisherService.getPublisherById("publisherId")).thenReturn(generatePublisher());
         Mockito.when(directorService.getDirectorById("directorId")).thenReturn(generateDirector());
-        Mockito.when(actorService.getActorList(List.of("actorId1", "actorId2"))).thenReturn(new ArrayList<>());
+        Mockito.when(actorService.getActorList(List.of("actorId1", "actorId2"))).thenReturn(List.of(new Actor("taner", LocalDate.of(1997, 04,23), Gender.MALE)));
         Mockito.when(movieRepository.save(movie)).thenReturn(expectedMovie);
+        Mockito.when(movieDtoConverter.convert(expectedMovie)).thenReturn(expectedMovieDto);
 
         /* 3. Adim: Test edilecek metodu calistir */
-        Movie result = movieService.createMovie(movieRequest);
+        MovieDto result = movieService.createMovie(movieRequest);
 
         /* 4. Adim: Sonucu, beklenen veri ile karsilastir. */
 
-        assertEquals(expectedMovie, result);
+        assertEquals(expectedMovieDto, result);
 
         /* 5. Adim: hangi davranışlar gerçekleştirilmiş kontrol et */
         Mockito.verify(publisherService).getPublisherById("publisherId");
         Mockito.verify(directorService).getDirectorById("directorId");
         Mockito.verify(actorService).getActorList(List.of("actorId1", "actorId2"));
         Mockito.verify(movieRepository).save(movie);
+        Mockito.verify(movieDtoConverter).convert(expectedMovie);
     }
 
 }

@@ -1,11 +1,8 @@
 package com.folksdev.movie.dto
 
 import com.folksdev.movie.model.GenresType
-import javax.validation.constraints.*
 
-class CreateMovieRequest(
-    @field:NotBlank
-    val title: String?,
+class UpdateMovieRequest @JvmOverloads constructor(
     description: String?,
     imdbUrl: String?,
     duration: Int?,
