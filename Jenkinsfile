@@ -1,5 +1,4 @@
 pipeline {
-2
     environment {
         registry = "cagridursun/movie-api"
         registryCredential = 'dockerhub'
