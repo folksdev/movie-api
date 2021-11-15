@@ -16,6 +16,10 @@ pipeline {
                 git 'https://github.com/folksdev/movie-api.git'
             }
         }
+        stage('Initialize'){
+                def dockerHome = tool 'myDocker'
+                env.PATH = "${dockerHome}/bin:${env.PATH}"
+        }
         stage('Building our image') {
             steps {
                 script {
