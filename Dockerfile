@@ -1,6 +1,6 @@
 FROM openjdk:11 AS build
 
-RUN chmod +x mvnw
+RUN chmod +x ./mvnw
 COPY pom.xml mvnw ./
 COPY .mvn .mvn
 RUN ./mvnw dependency:resolve
