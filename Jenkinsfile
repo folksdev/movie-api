@@ -22,21 +22,21 @@ pipeline {
             }
         }
         stage('Building our image') {
-                    steps {
-                        script {
-                            dockerImage = docker.build "cagridursun/movie-api:$BUILD_NUMBER"
-                        }
+            steps {
+                script {
+                    dockerImage = docker.build
+                }
+            }
+        }
+        stage('Deploy our image') {
+            steps {
+                script {
+                    // Assume the Docker Hub registry by passing an empty string as the first parameter
+                    docker.withRegistry('' , 'dockerhub') {
+                        dockerImage.push()
                     }
                 }
-                stage('Deploy our image') {
-                    steps {
-                        script {
-                            // Assume the Docker Hub registry by passing an empty string as the first parameter
-                            docker.withRegistry('' , 'dockerhub') {
-                                dockerImage.push()
-                            }
-                        }
-                    }
-                }
+            }
+        }
     }
 }
