@@ -3,7 +3,6 @@ pipeline {
         registry = "cagridursun/movie-api"
         registryCredential = 'dockerhub'
         dockerImage = ''
-        dockerHome = tool + 'myDocker'
     }
     agent {
         docker {
@@ -15,11 +14,6 @@ pipeline {
         stage('Cloning our Git') {
             steps {
                 git 'https://github.com/folksdev/movie-api.git'
-            }
-        }
-        stage('Initialize'){
-            steps {
-                env.PATH = dockerHome "/bin:" + $env.PATH
             }
         }
         stage('Building our image') {
