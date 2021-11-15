@@ -1,41 +1,36 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.1-adoptopenjdk-11'
-            args '-v /root/.m2:/root/.m2'
-        }
+2
+    environment {
+        registry = "cagridursun/movie-api"
+        registryCredential = 'dockerhub'
+        dockerImage = ''
     }
+    agent any
     stages {
-        stage('Build') {
+        stage('Cloning our Git') {
             steps {
-                sh 'mvn -B -DskipTests clean package'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                }
+                git 'https://github.com/folksdev/movie-api.git'
             }
         }
         stage('Building our image') {
             steps {
                 script {
-                    dockerImage = docker.build
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
             }
         }
         stage('Deploy our image') {
             steps {
                 script {
-                    // Assume the Docker Hub registry by passing an empty string as the first parameter
-                    docker.withRegistry('' , 'dockerhub') {
+                    docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                     }
                 }
+            }
+        }
+        stage('Cleaning up') {
+            steps {
+                sh "docker rmi $registry:$BUILD_NUMBER"
             }
         }
     }
