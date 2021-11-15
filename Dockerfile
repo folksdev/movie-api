@@ -9,7 +9,6 @@ COPY src src
 RUN ./mvnw package
 
 
-
 FROM openjdk:11
 WORKDIR movie-api
 COPY --from=build target/*.jar movie-api.jar
