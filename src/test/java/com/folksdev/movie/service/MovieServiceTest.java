@@ -102,6 +102,7 @@ class MovieServiceTest extends TestSupport {
         Mockito.when(movieRepository.save(movie)).thenReturn(expectedMovie);
         Mockito.when(movieDtoConverter.convert(expectedMovie)).thenReturn(expectedMovieDto);
 
+
         /* 3. Adim: Test edilecek metodu calistir */
         MovieDto result = movieService.createMovie(movieRequest);
 
