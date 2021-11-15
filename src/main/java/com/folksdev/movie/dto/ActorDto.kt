@@ -9,7 +9,7 @@ data class ActorDto @JvmOverloads constructor(
     val name: String,
     val dateOfBirth: LocalDate,
     val gender: Gender,
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY) //movie listesi bos ise Json'da gosterme
     val movieList: List<MovieDto>? = ArrayList()
 )
 

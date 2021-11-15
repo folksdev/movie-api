@@ -35,7 +35,6 @@ data class Director @JvmOverloads constructor(
         var result = id?.hashCode() ?: 0
         result = 31 * result + name.hashCode()
         result = 31 * result + lastName.hashCode()
-        result = 31 * result + movies.hashCode()
         return result
     }
 }

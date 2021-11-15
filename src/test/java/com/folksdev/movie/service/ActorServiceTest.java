@@ -1,9 +1,9 @@
 package com.folksdev.movie.service;
 
+import com.folksdev.movie.dto.converter.ActorDtoConverter;
 import com.folksdev.movie.model.Actor;
 import com.folksdev.movie.model.Gender;
 import com.folksdev.movie.repository.ActorRepository;
-import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,12 +19,14 @@ class ActorServiceTest {
     private ActorRepository actorRepository;
 
     private ActorService actorService;
+    private ActorDtoConverter actorDtoConverter;
 
     @BeforeEach
     public void setup() {
         actorRepository = Mockito.mock(ActorRepository.class);
+        actorDtoConverter = Mockito.mock(ActorDtoConverter.class);
 
-        actorService = new ActorService(actorRepository);
+        actorService = new ActorService(actorRepository, actorDtoConverter);
     }
 
     @Test

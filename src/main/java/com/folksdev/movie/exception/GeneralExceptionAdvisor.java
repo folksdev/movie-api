@@ -33,6 +33,15 @@ public class GeneralExceptionAdvisor extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(MovieNotFoundException.class)
     public ResponseEntity<?> handle(MovieNotFoundException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        return handleNotFound(exception.getMessage());
+    }
+
+    @ExceptionHandler(ActorNotFoundException.class)
+    public ResponseEntity<?> handle(ActorNotFoundException exception) {
+        return handleNotFound(exception.getMessage());
+    }
+
+    private ResponseEntity<?> handleNotFound(String s) {
+        return new ResponseEntity<>(s, HttpStatus.NOT_FOUND);
     }
 }

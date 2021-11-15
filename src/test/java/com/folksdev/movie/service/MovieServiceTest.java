@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -75,12 +76,12 @@ class MovieServiceTest extends TestSupport {
     void testCreateMovie_whenActorListNotExist_shouldReturnCreatedMovieByDefaultActor() {
         /* 1. Adim: Veri Hazirlama */
         CreateMovieRequest movieRequest = generateMovieRequest();
-        Movie movie = generateMovie(null,
+        Movie movie = generateMovie("",
                 movieRequest,
-                Set.of(new Actor("taner", LocalDate.of(1997, 04,23), Gender.MALE)));
+                Set.of(new Actor("id","taner", LocalDate.of(1997, 04,23), Gender.MALE, Collections.emptySet())));
         Movie expectedMovie = generateMovie("id",
                 movieRequest,
-                Set.of(new Actor("taner", LocalDate.of(1997, 04,23), Gender.MALE)));
+                Set.of(new Actor("id","taner", LocalDate.of(1997, 04,23), Gender.MALE, Collections.emptySet())));
 
         MovieDto expectedMovieDto = new MovieDto("id",
                 "title",
@@ -97,7 +98,7 @@ class MovieServiceTest extends TestSupport {
         /* 2. Adim: Davranis belirleme (Mock siniflar icin) */
         Mockito.when(publisherService.getPublisherById("publisherId")).thenReturn(generatePublisher());
         Mockito.when(directorService.getDirectorById("directorId")).thenReturn(generateDirector());
-        Mockito.when(actorService.getActorList(List.of("actorId1", "actorId2"))).thenReturn(List.of(new Actor("taner", LocalDate.of(1997, 04,23), Gender.MALE)));
+        Mockito.when(actorService.getActorList(List.of("actorId1", "actorId2"))).thenReturn(List.of(new Actor("id","taner", LocalDate.of(1997, 04,23), Gender.MALE, Collections.emptySet())));
         Mockito.when(movieRepository.save(movie)).thenReturn(expectedMovie);
         Mockito.when(movieDtoConverter.convert(expectedMovie)).thenReturn(expectedMovieDto);
 

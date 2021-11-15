@@ -24,10 +24,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(locations = "classpath:application.properties")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) // Context ayaga kaldirir
+@TestPropertySource(locations = "classpath:application.properties") // Test context icin kullanilacak propertyleri ayarlar.
 @DirtiesContext
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc // Context icerisindeki servletleri ayaga kaldirir.
 public class IntegrationTestSupport {
 
     @Autowired

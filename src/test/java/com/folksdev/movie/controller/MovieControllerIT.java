@@ -68,7 +68,8 @@ class MovieControllerIT extends IntegrationTestSupport {
                     .andExpect(jsonPath("$.title", is("title")))
                     .andExpect(jsonPath("$.description", is("description")))
                     .andExpect(jsonPath("$.actors", hasSize(3))) //array Object
-                    .andExpect(jsonPath("$.director.name", is("director-name")));
+                    .andExpect(jsonPath("$.director.name", is("director-name")))
+                    .andExpect(jsonPath("$.duration", is("2h 5m")));
 
         List<Movie> createdMovie = movieRepository.findAll();
         assertEquals(1, createdMovie.size());
