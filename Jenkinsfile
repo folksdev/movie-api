@@ -32,11 +32,5 @@ pipeline {
                 }
             }
         }
-
-        stage('Push image') {
-            steps {
-                sh 'mvn spring-boot:run'
-            }
-        }
     }
 }
