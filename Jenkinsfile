@@ -1,17 +1,27 @@
 pipeline {
-    stage('Clone repository') {
-        checkout scm
-    }
+    stages {
+        stage('Clone repository') {
+            steps {
+                checkout scm
+            }
+        }
 
-    stage('Build') {
-        sh 'mvn clean install -DskipTests'
-    }
+        stage('Build') {
+            steps {
+                sh 'mvn clean install -DskipTests'
+            }
+        }
 
-    stage('Test image') {
-        sh 'mvn clean test'
-    }
+        stage('Test image') {
+            steps {
+                sh 'mvn clean test'
+            }
+        }
 
-    stage('Push image') {
-        sh 'mvn spring-boot:run'
+        stage('Push image') {
+            steps {
+                sh 'mvn spring-boot:run'
+            }
+        }
     }
 }
