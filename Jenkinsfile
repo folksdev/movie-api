@@ -3,6 +3,7 @@ pipeline {
         registry = "cagridursun/movie-api"
         registryCredential = 'dockerhub'
         dockerImage = ''
+        dockerHome = tool + 'myDocker'
     }
     agent {
         docker {
@@ -18,8 +19,7 @@ pipeline {
         }
         stage('Initialize'){
             steps {
-                def dockerHome = tool 'myDocker'
-                env.PATH = "$dockerHome/bin:" + $env.PATH
+                env.PATH = dockerHome "/bin:" + $env.PATH
             }
         }
         stage('Building our image') {
