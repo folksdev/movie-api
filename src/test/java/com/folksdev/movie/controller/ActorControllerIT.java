@@ -27,6 +27,7 @@ class ActorControllerIT extends IntegrationTestSupport {
                 .andExpect(jsonPath("$.dateOfBirth", is(actor.getDateOfBirth().toString())));
     }
 
+
     @Test
     public void testGetActorById_whenActorIdNotExist_shouldReturnNotFound() throws Exception {
 
