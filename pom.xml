@@ -17,6 +17,7 @@
 		<java.version>11</java.version>
 		<kotlin.version>1.5.31</kotlin.version>
 		<flyway-maven-plugin.version>8.0.0</flyway-maven-plugin.version>
+		<open-api.version>1.5.6</open-api.version>
 	</properties>
 	<dependencies>
 		<!-- SPRING -->
@@ -42,7 +43,7 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.5.6</version>
+			<version>${open-api.version}</version>
 		</dependency>
 
 		<dependency>
