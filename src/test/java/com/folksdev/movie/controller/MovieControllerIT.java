@@ -60,16 +60,17 @@ class MovieControllerIT extends IntegrationTestSupport {
                 director.getId()
         );
 
+
         this.mockMvc.perform(post("/v1/movie")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(mapper.writer().withDefaultPrettyPrinter().writeValueAsString(request)))
-                    .andExpect(status().is2xxSuccessful())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(jsonPath("$.title", is("title")))
-                    .andExpect(jsonPath("$.description", is("description")))
-                    .andExpect(jsonPath("$.actors", hasSize(3))) //array Object
-                    .andExpect(jsonPath("$.director.name", is("director-name")))
-                    .andExpect(jsonPath("$.duration", is("2h 5m")));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writer().withDefaultPrettyPrinter().writeValueAsString(request)))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().contentType(new MediaType("application", "hal+json")))
+                .andExpect(jsonPath("$.title", is("title")))
+                .andExpect(jsonPath("$.description", is("description")))
+                .andExpect(jsonPath("$.actors", hasSize(3))) //array Object
+                .andExpect(jsonPath("$.director.name", is("director-name")))
+                .andExpect(jsonPath("$.duration", is("2h 5m")));
 
         List<Movie> createdMovie = movieRepository.findAll();
         assertEquals(1, createdMovie.size());
