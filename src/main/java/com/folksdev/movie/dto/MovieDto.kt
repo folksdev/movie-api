@@ -2,6 +2,7 @@ package com.folksdev.movie.dto
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.folksdev.movie.model.GenresType
+import org.springframework.hateoas.RepresentationModel
 
 
 data class MovieDto @JvmOverloads constructor(
@@ -18,4 +19,4 @@ data class MovieDto @JvmOverloads constructor(
     val director: DirectorDto? = null,
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     val publisherName: String? = ""
-)
+) : RepresentationModel<MovieDto>()

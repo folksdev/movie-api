@@ -3,6 +3,8 @@ package com.folksdev.movie.controller;
 import com.folksdev.movie.dto.ActorDto;
 import com.folksdev.movie.model.Actor;
 import com.folksdev.movie.service.ActorService;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/v1/actor")
@@ -29,7 +33,13 @@ public class ActorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ActorDto> getActorById(@PathVariable String id) {
-        return ResponseEntity.ok(actorService.getActorById(id));
+        ActorDto actorDto = actorService.getActorById(id);
+        actorDto.getMovieList().forEach(movieDto -> {
+            Link movieLink = linkTo(methodOn(MovieController.class).getMovie(movieDto.getId())).withRel("/v1/movie/");
+            movieDto.add(movieLink);
+        });
+
+        return ResponseEntity.ok(actorDto);
     }
 
     @GetMapping("/filter/{name}")

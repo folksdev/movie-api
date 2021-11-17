@@ -41,6 +41,11 @@ public class GeneralExceptionAdvisor extends ResponseEntityExceptionHandler {
         return handleNotFound(exception.getMessage());
     }
 
+    @ExceptionHandler(PublisherNotFoundException.class)
+    public ResponseEntity<?> handle(PublisherNotFoundException exception) {
+        return handleNotFound(exception.getMessage());
+    }
+
     private ResponseEntity<?> handleNotFound(String s) {
         return new ResponseEntity<>(s, HttpStatus.NOT_FOUND);
     }
